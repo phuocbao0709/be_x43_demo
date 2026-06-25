@@ -23,10 +23,10 @@ export const env = {
   cloudinaryApiSecret: rawEnv.CLOUDINARY_API_SECRET
 };
 
-if (!env.mongoUri || !env.jwtSecret) {
-  throw new Error('Missing required environment variables (MONGO_URI, JWT_SECRET)');
-}
-
 if (!env.cloudinaryCloudName || !env.cloudinaryApiKey || !env.cloudinaryApiSecret) {
   console.warn('Warning: Cloudinary env vars not set. Avatar upload will not work.');
+}
+
+if (!env.mongoUri || !env.jwtSecret) {
+  console.warn('Warning: Missing required environment variables (MONGO_URI, JWT_SECRET). The API will not work until they are set.');
 }

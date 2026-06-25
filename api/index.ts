@@ -11,6 +11,14 @@ const ensureDbConnected = async () => {
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  await ensureDbConnected();
-  return app(req, res);
+  try {
+    await ensureDbConnected();
+    return app(req, res);
+  } catch (error) {
+    console.error('Vercel handler error:', error);
+    return res.status(500).json({
+      message:
+        error instanceof Error ? error.message : 'Internal server error'
+    });
+  }
 }

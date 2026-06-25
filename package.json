@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
+    "vercel-build": "npm run build",
     "start": "node build/server.js",
     "seed": "tsx src/scripts/seed.ts",
     "check:api": "tsx src/scripts/check-api.ts",
