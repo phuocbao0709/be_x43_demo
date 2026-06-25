@@ -18,8 +18,10 @@ export const createApp = () => {
   app.use(express.json());
   app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 300 }));
 
+  app.get('/', (_req, res) => res.json({ ok: true, service: 'be-x43-demo' }));
   app.get('/health', (_req, res) => res.json({ ok: true }));
-  app.use('/', homeRouter);
+  app.use('/home', homeRouter);
+  app.use('/api/home', homeRouter);
   app.use('/auth', authRouter);
   app.use('/admin', adminRouter);
   app.use('/banners', bannerRouter);
