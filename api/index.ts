@@ -12,8 +12,14 @@ const ensureDbConnected = async () => {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
+    if (req.method === 'GET' && req.url === '/api/health') {
+      return res.status(200).json({ ok: true });
+    }
+
     await ensureDbConnected();
-    return app(req, res);
+
+    app(req as unknown as never, res as unknown as never);
+    return;
   } catch (error) {
     console.error('Vercel handler error:', error);
     return res.status(500).json({
