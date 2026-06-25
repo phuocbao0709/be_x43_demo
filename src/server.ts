@@ -1,10 +1,10 @@
-import { app } from './app';
 import { connectDb } from './config/db';
 import { env } from './config/env';
+import { createApp } from './create-app';
 
 const start = async () => {
   await connectDb();
-  app.listen(env.port, () => {
+  createApp().listen(env.port, () => {
     console.log(`Backend running at http://localhost:${env.port}`);
   });
 };
