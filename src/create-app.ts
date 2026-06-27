@@ -13,6 +13,7 @@ import { profileRouter } from './routes/profile.route';
 export const createApp = () => {
   const app = express();
 
+  // Vercel deployment marker: keep this app factory as the single server entrypoint.
   app.set('trust proxy', 1);
   app.use(cors({ origin: env.clientUrl }));
   app.use(express.json());

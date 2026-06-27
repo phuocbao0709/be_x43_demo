@@ -151,6 +151,12 @@ export const getProductBySlug = async (req: Request, res: Response) => {
   return res.json(toProductDto(product));
 };
 
+export const getProductById = async (req: Request, res: Response) => {
+  const product = await ProductModel.findById(req.params.id).lean();
+  if (!product) return res.status(404).json({ message: 'Product not found' });
+  return res.json(toProductDto(product));
+};
+
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const body = { ...req.body } as Record<string, unknown>;
