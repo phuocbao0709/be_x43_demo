@@ -35,11 +35,35 @@ const ensureDbConnected = async () => {
   isDbConnected = true;
 };
 
+const allowedOrigins = new Set([
+  ...env.clientUrls,
+  'http://localhost:5173',
+  'http://localhost:3000'
+]);
+
+const isAllowedOrigin = (origin: string | undefined) => {
+  if (!origin) return true;
+  if (allowedOrigins.has(origin)) return true;
+  return /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
+};
+
 export const createApp = () => {
   const app = express();
 
   app.set('trust proxy', 1);
-  app.use(cors({ origin: env.clientUrl }));
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (isAllowedOrigin(origin)) {
+          callback(null, true);
+          return;
+        }
+
+        callback(new Error(`CORS blocked for origin: ${origin ?? 'unknown'}`));
+      },
+      credentials: true
+    })
+  );
   app.use(express.json());
   app.use(rateLimit({ windowMs: rateLimitWindowMs, max: rateLimitMaxRequests }));
 

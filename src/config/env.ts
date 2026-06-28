@@ -1,8 +1,14 @@
-import dotenv from 'dotenv';
+﻿import dotenv from 'dotenv';
 
 dotenv.config();
 
 const rawEnv = process.env as Record<string, string | undefined>;
+
+const parseClientUrls = (value: string | undefined) =>
+  (value ?? 'http://localhost:5173')
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
 
 export const env = {
   port: Number(rawEnv.PORT ?? 5000),
@@ -10,6 +16,7 @@ export const env = {
   jwtSecret: rawEnv.JWT_SECRET ?? '',
   jwtExpiresIn: rawEnv.JWT_EXPIRES_IN ?? '1d',
   clientUrl: rawEnv.CLIENT_URL ?? 'http://localhost:5173',
+  clientUrls: parseClientUrls(rawEnv.CLIENT_URLS ?? rawEnv.CLIENT_URL),
   smtpHost: rawEnv.SMTP_HOST ?? '',
   smtpPort: Number(rawEnv.SMTP_PORT ?? 587),
   smtpSecure: rawEnv.SMTP_SECURE === 'true',
